@@ -27,6 +27,7 @@ class EventController extends Controller
         $end = $request->get("end");
 
         return EventResource::collection(Event::all())->whereBetween('start', [$start, $end])->all();
+        // Returns [ { event1 attributes }, { event2 attributes }, ... ]
     }
 
     /**
@@ -47,7 +48,6 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: Make sure the user can create the event for the specified association
 
         $validated = $request->validate([
             'title' => 'required|min:2|max:255',
@@ -69,12 +69,13 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Event $event
-     * @return Event
+     * @param \App\Event $event
+     * @return EventResource
      */
     public function show(Event $event)
     {
-        return $event;
+        return new EventResource($event);
+        // Returns { data: { $event attributes } }
     }
 
     /**
@@ -97,7 +98,6 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        // TODO: Make sure the event is editable
 
         $validated = $request->validate([
             'title' => 'min:2|max:255',
@@ -129,7 +129,6 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        // TODO: Make sure the event is editable
 
         $event->delete();
         // returns a 200 OK status after successful destruction with no body
