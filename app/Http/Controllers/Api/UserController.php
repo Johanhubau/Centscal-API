@@ -25,9 +25,11 @@ class UserController extends Controller
             return response()->json(['error'=>'Unauthorised'], 401);
         }
     }
+
     /**
      * Register api
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
@@ -59,6 +61,12 @@ class UserController extends Controller
         return response()->json(['success' => $user], $this-> successStatus);
     }
 
+    /**
+     * logout api
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function logout (Request $request) {
 
         $token = $request->user()->token();
