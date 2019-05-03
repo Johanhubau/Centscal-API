@@ -14,16 +14,21 @@ class EventResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $ret = [
             'id' => $this->id,
             'title' => $this->title." - ".$this->association->name,
-            'groupId' => $this->asso_id,
             'start' => $this->start,
             'end' => $this->end,
-            'allDay' => (boolval($this->all_day) ? 'true' : 'false'),
+            'assoId' => $this->asso_id,
             'color' => $this->association->color,
-            'url' => $this->url,
-            'source' => $this->source
+            'allDay' => (boolval($this->all_day) ? 'true' : 'false'),
         ];
+        if ($this->url != null){
+            $ret['url'] = $this->url;
+        }
+        if ($this->source != null){
+            $ret['source'] = $this->source;
+        }
+        return $ret;
     }
 }
