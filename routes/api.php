@@ -21,13 +21,20 @@ Route::resource('associations', 'Api\AssociationController');
 
 Route::resource('events', 'Api\EventController');
 
+
 // Authentication routes
 Route::post('login', 'Api\UserController@login');
 Route::post('register', 'Api\UserController@register');
 
 Route::group(['middleware' => 'auth:api'], function(){
     Route::post('details', 'Api\UserController@details');
+    Route::post('logout', 'Api\UserController@logout');
 });
+
+Route::get('notAuth', function(){
+    return response()->json(['error'=>'notAuth'], 401);
+})->name('notAuth');
+
 
 //Route::get('/events/{event}', function(App\Event $event){
 //    return $event;
