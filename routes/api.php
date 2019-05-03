@@ -19,14 +19,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('associations', 'Api\AssociationController');
 
-Route::resource('events', 'Api\EventController');
-
-
 // Authentication routes
 Route::post('login', 'Api\UserController@login');
 Route::post('register', 'Api\UserController@register');
 
+Route::get('/events', 'Api\EventController@index');
+Route::get('events/{event}', 'Api\EventController@show');
+
+
 Route::group(['middleware' => 'auth:api'], function(){
+
+    Route::put('events/{event}', 'Api\EventController@update')->middleware('can:update,event');
+    Route::post('/events', 'Api\EventController@store');
+    Route::delete('/{event}', 'Api\EventController@destroy')->middleware('can:delete,event');
+
     Route::post('details', 'Api\UserController@details');
     Route::post('logout', 'Api\UserController@logout');
 });

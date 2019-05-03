@@ -8,6 +8,7 @@ use App\Http\Resources\EventResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -58,6 +59,13 @@ class EventController extends Controller
             'url' => 'url|nullable',
             'source' => 'nullable|exists:events,id'
         ]);
+
+        // Check if user has the right to create event for this association
+        $user = Auth::user();
+        $association = $request->get('asso_id');
+        if(!$user->associations->find($association) != null){
+            return response()->json(['error' => 'Unauthorised access'], 403);
+        }
 
         $validated['start'] = date('Y-m-d H:i:s', strtotime($validated['start']));
         $validated['end'] = date('Y-m-d H:i:s', strtotime($validated['end']));
