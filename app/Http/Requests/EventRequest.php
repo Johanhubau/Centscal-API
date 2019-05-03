@@ -30,10 +30,9 @@ class EventRequest extends FormRequest
             'asso_id' => 'required|exists:associations,id',
             'all_day' => 'boolean',
             'start' => 'required|date',
-            'end' => 'required|date',
+            'end' => 'required|date|after:start',
             'url' => 'url|nullable',
             'source' => 'nullable|exists:events,id'
-
         ];
     }
 
