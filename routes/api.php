@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth:api'], function(){
 
     Route::put('events/{event}', 'Api\EventController@update')->middleware('can:update,event');
     Route::post('/events', 'Api\EventController@store');
-    Route::delete('/{event}', 'Api\EventController@destroy')->middleware('can:delete,event');
+    Route::delete('events/{event}', 'Api\EventController@destroy')->middleware('can:delete,event');
 
     Route::post('details', 'Api\UserController@details');
     Route::post('logout', 'Api\UserController@logout');
