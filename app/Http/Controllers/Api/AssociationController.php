@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Association;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssociationController extends Controller
 {
@@ -36,7 +37,18 @@ class AssociationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|min:2|max:255',
+            'color' => 'required|size:7|starts_with:#',
+            'user_id' => 'required|exists:users,id'
+        ]);
+
+        $user = Auth::user();
+        if(!$user->is_admin){
+            return response()->json(['error' => 'User not admin', 403]);
+        }
+
+        Association::create($validated);
     }
 
     /**
@@ -70,17 +82,24 @@ class AssociationController extends Controller
      */
     public function update(Request $request, Association $association)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'min:2|max:255',
+            'color' => 'size:7|starts_with:#'
+        ]);
+
+        $association->update($validated);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Association  $association
+     * @param \App\Association $association
      * @return \Illuminate\Http\Response
+     *
+     * @throws \Exception
      */
     public function destroy(Association $association)
     {
-        //
+        $association->delete();
     }
 }

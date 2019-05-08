@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Association extends Model
 {
+
+    protected $fillable = [
+        'name',
+        'color',
+        'user_id'
+    ];
+
+
     /**
      * Get the user associated with the association.
      */
